@@ -1,0 +1,17 @@
+body { padding-bottom: 145px; }
+
+.nopadding {
+   padding: 0px !important;
+   margin: 0px !important;   
+   background-color: transparent !important;   
+}
+
+.nopadding2 {
+   margin: 3px !important;
+}
+
+.msgname {
+	font-weight: bold;
+	font-size: small;
+	color: blue;
+}

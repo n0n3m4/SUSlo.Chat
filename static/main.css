@@ -1,0 +1,13 @@
+.myRow{
+     margin-bottom:0px !important; 
+	 margin-top:0px !important; 
+}
+
+.container hr {
+margin: 0px 0;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}

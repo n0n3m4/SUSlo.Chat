@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>Статистика</title>
+    <link rel='stylesheet' href='{{bootstrap_find_resource('css/bootstrap.css', cdn='static')}}' type='text/css' media='all'>
+	<script src="{{bootstrap_find_resource('jquery.js', cdn='static')}}" type="text/javascript"></script>
+	<script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='static')}}" type="text/javascript"></script>
+  </head>
+  <body>
+	<nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Переключить навигацию</span>
+          </button>
+          <a class="navbar-brand" href="#">SUSlo.WAF</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/panel">Панель управления</a></li>
+            <li class="active"><a href="#">Статистика</a></li>
+            <li><a href="/logout">Выход</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Лог SUSlo.WAF</h3>
+			</div>
+			<div class="panel-body" id="waflog" style="max-height: 50vh;overflow-y: scroll;">
+				{{ suslog|safe }}
+			</div>
+			<script>
+				var waflog = document.getElementById("waflog");
+				waflog.scrollTop = waflog.scrollHeight;
+			</script>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Статус NFQUEUE</h3>
+			</div>
+			<div class="panel-body" id="nfqueue">
+				{{ nfqueue|safe }}
+			</div>
+		</div>
+	</div>
+  </body>
+</html>

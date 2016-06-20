@@ -1,0 +1,96 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<html>
+  <head>
+    <title>Главная | SUSlo.Paste</title>
+    <link rel='stylesheet' href='{{bootstrap_find_resource('css/bootstrap.css', cdn='static')}}' type='text/css' media='all'>
+	<script src="{{bootstrap_find_resource('jquery.js', cdn='static')}}" type="text/javascript"></script>
+	<script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='static')}}" type="text/javascript"></script>
+	<link rel='stylesheet' href='static/css/highlightjs-default.css' type='text/css' media='all'>
+	{% if hazpaste %}
+		<link rel='stylesheet' href='static/viewpaste.css' type='text/css' media='all'>
+	{% else %}
+		<link rel='stylesheet' href='static/paste.css' type='text/css' media='all'>
+	{% endif %}
+	<script src="static/js/cryptico.js" type="text/javascript"></script>
+	<script src="static/js/chatmain.js" type="text/javascript"></script>
+	<script src="static/js/highlight.pack.js" type="text/javascript"></script>
+  </head>
+	
+	<script type="text/javascript">
+	
+	function decrypt()
+	{		
+		var myblock = $('pre code').first();
+		var oldval = myblock.text();
+		var aeskey = b64tokey(location.hash.substring(1));		
+		myblock.text(decryptAES(aeskey,oldval));
+		hljs.highlightBlock($('pre code').first()[0]);
+	}
+
+	function doonload()
+	{
+		{% if hazpaste %}
+		decrypt();
+		{% endif %}
+	}
+	
+	</script>
+  
+  <body onload=doonload();>
+	<div
+		{% if not hazpaste %}
+		class="container-fluid"
+		{% endif %}
+		id="pastecontainer">
+		{% if hazpaste %}
+			<pre><code>{{ paste }}</code></pre>
+		{% else %}
+			<form method="post" id="pastepost" class="nopadding" action="#">
+				<textarea class="form-control" id="message" name="message" style="width:100%;height:100%"></textarea>
+				<div class="footer navbar-fixed-bottom">
+					<div class="navbar-inner">
+						<div class="container-fluid paddedbtn">
+							<button type="submit" class="btn btn-success paddedbtn" style="width:100%">Отправить</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		{% endif %}
+	</div>
+	
+	<script>
+	$("#pastepost").submit(function(e) {
+		senddata = $("#pastepost").serializeObject();
+		if (senddata['message']!="")
+		{			
+			var aeskey = gensafekey();
+			senddata['message'] = encryptAES(aeskey,senddata['message']);
+			$.ajax({
+				type: "POST",
+				url: "/pastepost",
+				data: senddata, // serializes the form's elements.
+				success: function(data)
+				{
+					window.location.href="/paste?id="+data+"#"+keytob64(aeskey);
+				},
+				complete: function()
+				{
+					
+				}
+			});
+		}
+		else
+		{
+			//Nothing
+		}
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+	});
+	
+	</script>
+	
+  </body>
+  
+</html>
